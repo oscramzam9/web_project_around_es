@@ -1,6 +1,7 @@
 # Tripleten web_project_around_es
 
-Author: Oscar Ramirez
+Author:
+Oscar Ramirez
 
 Utilized technologies:
 -Query selector
