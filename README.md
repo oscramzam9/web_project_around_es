@@ -4,13 +4,14 @@ Author:
 Oscar Ramirez
 
 Utilized technologies:
--Query selector
--Function listners
--HTML Template
--JS Template control
--URL references
--Modal control
--Standard class methods.
+-DOM manipulation using querySelector.
+-Event handling with EventListener.
+-HTML <template> element for dynamic card generation.
+-JavaScript template cloning (cloneNode).
+-Dynamic rendering of elements from data objects.
+-UTL-based image loading.
+-Standard Java Script classList methods.
+-Utilization of destructuring.
 
 Description:
 At this point the web page is capable to add content to the DOM with front-end functionality. Meaning that the content will be reset every time the webpage is loaded.

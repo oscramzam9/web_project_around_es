@@ -72,7 +72,10 @@ function closeModal(popup) {
   popup.classList.remove("popup_is-opened");
 }
 
-function getCardElement(data) {
+function getCardElement({
+  name = "Sin título",
+  link = "./images/placeholder.jpg",
+}) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardTitle = cardElement.querySelector(".card__title");
   const cardImage = cardElement.querySelector(".card__image");
@@ -82,9 +85,9 @@ function getCardElement(data) {
   //Query Selector for deleteButton
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
-  cardTitle.textContent = data.name;
-  cardImage.src = data.link;
-  cardImage.alt = data.name;
+  cardTitle.textContent = name;
+  cardImage.src = link;
+  cardImage.alt = name;
   //////////////////////////// Functional listeners ///////////////////////
   //Implements like toggle heart
   likeButton.addEventListener("click", function () {
@@ -97,9 +100,7 @@ function getCardElement(data) {
   });
 
   //Implement pop up card
-  cardImage.addEventListener("click", () =>
-    handlePreviewImage(data.name, data.link),
-  );
+  cardImage.addEventListener("click", () => handlePreviewImage(name, link));
   /////////////////////////// End of functional listeners //////////////////
   return cardElement;
 }
