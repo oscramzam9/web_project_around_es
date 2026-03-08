@@ -29,6 +29,7 @@ const initialCards = [
 //modals
 const modalProfile = document.querySelector("#edit-popup");
 const modalNewCard = document.querySelector("#new-card-popup");
+const modalImage = document.querySelector("#image-popup");
 
 //Container
 const cardsContainer = document.querySelector(".cards__list");
@@ -54,6 +55,11 @@ const closeNewCardButton = modalNewCard.querySelector(".popup__close");
 const newCardForm = document.querySelector("#new-card-form");
 const cardTitleInput = document.querySelector(".popup__input_type_card-name");
 const cardLinkInput = document.querySelector(".popup__input_type_url");
+
+//Image preview image
+const modalImageElement = modalImage.querySelector(".popup__image");
+const modalImageCaption = modalImage.querySelector(".popup__caption");
+const closeImageButton = modalImage.querySelector(".popup__close");
 ////////////////////////////// End of variable definition ///////////////////////////////
 
 /////////////////////////  Function implementation    ////////////////////////
@@ -66,7 +72,7 @@ function closeModal(popup) {
   popup.classList.remove("popup_is-opened");
 }
 
-function getCardElement(name, link) {
+function getCardElement(data) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardTitle = cardElement.querySelector(".card__title");
   const cardImage = cardElement.querySelector(".card__image");
@@ -76,9 +82,9 @@ function getCardElement(name, link) {
   //Query Selector for deleteButton
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
-  cardTitle.textContent = name;
-  cardImage.src = link;
-  cardImage.alt = name;
+  cardTitle.textContent = data.name;
+  cardImage.src = data.link;
+  cardImage.alt = data.name;
   //////////////////////////// Functional listeners ///////////////////////
   //Implements like toggle heart
   likeButton.addEventListener("click", function () {
@@ -89,20 +95,29 @@ function getCardElement(name, link) {
   deleteButton.addEventListener("click", function () {
     deleteButton.closest(".card").remove();
   });
+
+  //Implement pop up card
+  cardImage.addEventListener("click", () =>
+    handlePreviewImage(data.name, data.link),
+  );
   /////////////////////////// End of functional listeners //////////////////
   return cardElement;
 }
 
-function renderCard(name, link, container) {
-  const cardElement = getCardElement(name, link);
+function handlePreviewImage(name, link) {
+  modalImageCaption.textContent = name;
+  modalImageElement.src = link;
+  modalImageElement.alt = name;
+  openModal(modalImage);
+}
+
+function renderCard(data, container) {
+  const cardElement = getCardElement(data);
   container.prepend(cardElement);
 }
 
 function handleOpenAddModal() {
   newCardForm.reset();
-  const inputList = Array.from(newCardForm.querySelectorAll(".popup__input"));
-  const buttonElement = newCardForm.querySelector(".popup__button");
-
   openModal(modalNewCard);
 }
 function openEditProfile() {
@@ -110,7 +125,6 @@ function openEditProfile() {
   jobInput.value = profileJob.textContent;
   openModal(editPopup);
 }
-editButton.addEventListener("click", openEditProfile);
 
 function closeEditProfile() {
   closeModal(editPopup);
@@ -126,11 +140,14 @@ function handleProfileFormSubmit(evt) {
 }
 
 function handleCardFormSubmit(evt) {
-  debugger;
   evt.preventDefault();
-  const name = cardTitleInput.value;
-  const link = cardLinkInput.value;
-  renderCard(name, link, cardsContainer);
+
+  const newCard = {
+    name: cardTitleInput.value,
+    link: cardLinkInput.value,
+  };
+
+  renderCard(newCard, cardsContainer);
   closeModal(modalNewCard);
   newCardForm.reset();
 }
@@ -143,10 +160,11 @@ profileForm.addEventListener("submit", handleProfileFormSubmit);
 addButton.addEventListener("click", handleOpenAddModal);
 newCardForm.addEventListener("submit", handleCardFormSubmit);
 closeNewCardButton.addEventListener("click", () => closeModal(modalNewCard));
+closeImageButton.addEventListener("click", () => closeModal(modalImage));
 ////////////////////   End of definition of listeners /////////////////////////
 
 ////////////////////    Main method caller   ////////////////////////////
 initialCards.forEach(function (card) {
-  renderCard(card.name, card.link, cardsContainer);
+  renderCard(card, cardsContainer);
 });
 ///////////////////      End of Main method caller /////////////////////////
