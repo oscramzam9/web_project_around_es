@@ -18,5 +18,9 @@ At this point the web page is capable to add content to the DOM with front-end f
 
 The webpage has the functionality to edit the user data (name and job description), add new cards, delete cards, toggles aspect of element (like heart).
 
+The webpage also is capable to validate with certain criteria each of the input fields that are required in the forms.
+
+The webpage implements the capability to close the windows by clicking the external area of the window and also by pressing esc key.
+
 The web page can be launched from GitHub pages by the following link:
 https://oscramzam9.github.io/web_project_around_es/
