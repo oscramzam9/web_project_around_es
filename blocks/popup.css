@@ -31,6 +31,13 @@
   cursor: pointer;
 }
 
+.popup__button_disabled {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: default;
+}
+
 .popup__close {
   width: 35px;
   height: 35px;
@@ -76,8 +83,27 @@
   margin-bottom: 10px;
 }
 
+.popup__input_type_error {
+  border-bottom-color: #ff0000;
+}
+
+.popup__error {
+  color: #ff0000;
+  font-size: 12px;
+  line-height: 1.2;
+  display: block;
+  min-height: 15px;
+  margin-bottom: 25px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
 .popup__input:last-of-type {
   margin-bottom: 0;
+}
+
+.popup__error_visible {
+  opacity: 1;
 }
 
 .popup__title {

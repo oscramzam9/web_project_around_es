@@ -60,6 +60,10 @@ const cardLinkInput = document.querySelector(".popup__input_type_url");
 const modalImageElement = modalImage.querySelector(".popup__image");
 const modalImageCaption = modalImage.querySelector(".popup__caption");
 const closeImageButton = modalImage.querySelector(".popup__close");
+
+//Popups
+const popups = Array.from(document.querySelectorAll(".popup"));
+
 ////////////////////////////// End of variable definition ///////////////////////////////
 
 /////////////////////////  Function implementation    ////////////////////////
@@ -130,6 +134,74 @@ function openEditProfile() {
 function closeEditProfile() {
   closeModal(editPopup);
 }
+
+function showInputError(formElement, inputElement, errorMessage) {
+  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  inputElement.classList.add("popup__input_type_error");
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add("popup__error_visible");
+}
+
+function hideInputError(formElement, inputElement) {
+  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
+  inputElement.classList.remove("popup__input_type_error");
+  errorElement.classList.remove("popup__error_visible");
+  errorElement.textContent = "";
+}
+
+function checkInputValidity(formElement, inputElement) {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+}
+
+function toggleButtonState(inputList, buttonElement) {
+  const hasInvalidInput = inputList.some(
+    (inputElement) => !inputElement.validity.valid,
+  );
+
+  if (hasInvalidInput) {
+    buttonElement.classList.add("popup__button_disabled");
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove("popup__button_disabled");
+    buttonElement.disabled = false;
+  }
+}
+
+function setEventListeners(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
+  const buttonElement = formElement.querySelector(".popup__button");
+
+  toggleButtonState(inputList, buttonElement);
+
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", () => {
+      checkInputValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
+    });
+  });
+}
+
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}
+
+popups.forEach((popup) => {
+  popup.addEventListener("mousedown", (evt) => {
+    if (evt.target === popup) {
+      closeModal(popup);
+    }
+  });
+});
+
 /////////////////////////  End of Function implementation    ////////////////
 
 //////////////////////   Special submitter functions /////////////////////////////////
@@ -162,10 +234,13 @@ addButton.addEventListener("click", handleOpenAddModal);
 newCardForm.addEventListener("submit", handleCardFormSubmit);
 closeNewCardButton.addEventListener("click", () => closeModal(modalNewCard));
 closeImageButton.addEventListener("click", () => closeModal(modalImage));
+document.addEventListener("keydown", handleEscClose);
 ////////////////////   End of definition of listeners /////////////////////////
 
 ////////////////////    Main method caller   ////////////////////////////
 initialCards.forEach(function (card) {
   renderCard(card, cardsContainer);
 });
+setEventListeners(profileForm);
+setEventListeners(newCardForm);
 ///////////////////      End of Main method caller /////////////////////////
