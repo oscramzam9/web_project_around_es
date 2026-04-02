@@ -64,6 +64,15 @@ const closeImageButton = modalImage.querySelector(".popup__close");
 //Popups
 const popups = Array.from(document.querySelectorAll(".popup"));
 
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
 ////////////////////////////// End of variable definition ///////////////////////////////
 
 /////////////////////////////  Class definition /////////////////////////
@@ -127,6 +136,86 @@ class Card {
     return this._element;
   }
 }
+
+class FormValidator {
+  constructor(config, formElement) {
+    this._config = config;
+    this._formElement = formElement;
+
+    this._inputList = Array.from(
+      this._formElement.querySelectorAll(this._config.inputSelector)
+    );
+
+    this._buttonElement = this._formElement.querySelector(
+      this._config.submitButtonSelector
+    );
+  }
+
+  _showInputError(inputElement, errorMessage) {
+    const errorElement = this._formElement.querySelector(
+      `#${inputElement.id}-error`
+    );
+
+    inputElement.classList.add(this._config.inputErrorClass);
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add(this._config.errorClass);
+  }
+
+  _hideInputError(inputElement) {
+    const errorElement = this._formElement.querySelector(
+      `#${inputElement.id}-error`
+    );
+
+    inputElement.classList.remove(this._config.inputErrorClass);
+    errorElement.classList.remove(this._config.errorClass);
+    errorElement.textContent = "";
+  }
+
+  _checkInputValidity(inputElement) {
+    if (!inputElement.validity.valid) {
+      this._showInputError(inputElement, inputElement.validationMessage);
+    } else {
+      this._hideInputError(inputElement);
+    }
+  }
+
+  _hasInvalidInput() {
+    return this._inputList.some((inputElement) => {
+      return !inputElement.validity.valid;
+    });
+  }
+
+  _toggleButtonState() {
+    if (this._hasInvalidInput()) {
+      this._buttonElement.classList.add(
+        this._config.inactiveButtonClass
+      );
+      this._buttonElement.disabled = true;
+    } else {
+      this._buttonElement.classList.remove(
+        this._config.inactiveButtonClass
+      );
+      this._buttonElement.disabled = false;
+    }
+  }
+
+  _setEventListeners() {
+    this._toggleButtonState();
+
+    this._inputList.forEach((inputElement) => {
+      inputElement.addEventListener("input", () => {
+        this._checkInputValidity(inputElement);
+        this._toggleButtonState();
+      });
+    });
+  }
+
+  // 🔹 Método público
+  setEventListeners() {
+    this._setEventListeners();
+  }
+}
+
 /////////////////////////////  End of class definition //////////////////
 
 /////////////////////////  Function implementation    ////////////////////////
@@ -306,10 +395,20 @@ closeImageButton.addEventListener("click", () => closeModal(modalImage));
 document.addEventListener("keydown", handleEscClose);
 ////////////////////   End of definition of listeners /////////////////////////
 
-////////////////////    Main method caller   ////////////////////////////
+////////////////////    Main method caller and principal objects  ////////////////////////////
 initialCards.forEach(function (card) {
   renderCard(card, cardsContainer);
 });
-setEventListeners(profileForm);
-setEventListeners(newCardForm);
+
+const profileValidator = new FormValidator(
+  validationConfig,
+  profileForm
+);
+profileValidator.setEventListeners();
+
+const cardValidator = new FormValidator(
+  validationConfig,
+  newCardForm
+);
+cardValidator.setEventListeners();
 ///////////////////      End of Main method caller /////////////////////////
