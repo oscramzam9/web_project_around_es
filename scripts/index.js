@@ -66,6 +66,69 @@ const popups = Array.from(document.querySelectorAll(".popup"));
 
 ////////////////////////////// End of variable definition ///////////////////////////////
 
+/////////////////////////////  Class definition /////////////////////////
+class Card {
+  constructor(data, templateSelector, handleImageClick) {
+    this._name = data.name;
+    this._link = data.link;
+    this._templateSelector = templateSelector;
+    this._handleImageClick = handleImageClick;
+  }
+
+  _getTemplate() {
+    const cardElement = document
+      .querySelector(this._templateSelector)
+      .content.querySelector(".card")
+      .cloneNode(true);
+
+    return cardElement;
+  }
+
+  _handleLikeClick() {
+    this._likeButton.classList.toggle("card__like-button_is-active");
+  }
+
+  _handleDeleteClick() {
+    this._element.remove();
+  }
+
+  _handleImagePreview() {
+    this._handleImageClick(this._name, this._link);
+  }
+
+  _setEventListeners() {
+    this._likeButton.addEventListener("click", () =>
+      this._handleLikeClick()
+    );
+
+    this._deleteButton.addEventListener("click", () =>
+      this._handleDeleteClick()
+    );
+
+    this._image.addEventListener("click", () =>
+      this._handleImagePreview()
+    );
+  }
+
+  generateCard() {
+    this._element = this._getTemplate();
+
+    this._image = this._element.querySelector(".card__image");
+    this._title = this._element.querySelector(".card__title");
+    this._likeButton = this._element.querySelector(".card__like-button");
+    this._deleteButton = this._element.querySelector(".card__delete-button");
+
+    this._title.textContent = this._name;
+    this._image.src = this._link;
+    this._image.alt = this._name;
+
+    this._setEventListeners();
+
+    return this._element;
+  }
+}
+/////////////////////////////  End of class definition //////////////////
+
 /////////////////////////  Function implementation    ////////////////////////
 
 function openModal(modal) {
@@ -117,7 +180,13 @@ function handlePreviewImage(name, link) {
 }
 
 function renderCard(data, container) {
-  const cardElement = getCardElement(data);
+  const card = new Card(
+    data,
+    "#card-template",
+    handlePreviewImage
+  );
+
+  const cardElement = card.generateCard();
   container.prepend(cardElement);
 }
 
