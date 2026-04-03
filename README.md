@@ -12,6 +12,9 @@ Utilized technologies:
 -UTL-based image loading.
 -Standard Java Script classList methods.
 -Utilization of destructuring with init values.
+-Utilization of Class. 
+-Export and import of classes.
+-Modularity
 
 Description:
 At this point the web page is capable to add content to the DOM with front-end functionality. Meaning that the content will be reset every time the webpage is loaded.
