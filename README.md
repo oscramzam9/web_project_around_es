@@ -14,7 +14,10 @@ Utilized technologies:
 -Utilization of destructuring with init values.
 -Utilization of Class. 
 -Export and import of classes.
--Modularity
+-Modularity.
+-Utilization of destructuring for object.
+-Inheritance utilization.
+-POO.
 
 Description:
 At this point the web page is capable to add content to the DOM with front-end functionality. Meaning that the content will be reset every time the webpage is loaded.
