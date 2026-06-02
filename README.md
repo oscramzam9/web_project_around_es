@@ -18,6 +18,8 @@ Utilized technologies:
 -Utilization of destructuring for object.
 -Inheritance utilization.
 -POO.
+-Implements API utilization.
+-Usage of FETCH with arguments of PUT,DELETE,PATCH and POST.
 
 Description:
 At this point the web page is capable to add content to the DOM with front-end functionality. Meaning that the content will be reset every time the webpage is loaded.

@@ -1,9 +1,22 @@
 export class Card {
-  constructor(data, templateSelector, handleCardClick) {
+  constructor(
+    data,
+    templateSelector,
+    handleCardClick,
+    handleDeleteClick,
+    handleLikeClick,
+    userId
+  ) {
     this._name = data.name;
     this._link = data.link;
+    this._id = data._id;
+    this._isLiked = data.isLiked;
+    this._owner = data.owner;
+    this._userId = userId;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
+    this._handleDeleteClick = handleDeleteClick;
+    this._handleLikeClick = handleLikeClick;
   }
 
   _getTemplate() {
@@ -13,12 +26,20 @@ export class Card {
       .cloneNode(true);
   }
 
-  _handleLikeClick() {
-    this._likeButton.classList.toggle("card__like-button_is-active");
+  _setLikeState() {
+    this._likeButton.classList.toggle(
+      "card__like-button_is-active",
+      this._isLiked
+    );
   }
 
-  _handleDeleteClick() {
+  deleteCard() {
     this._element.remove();
+  }
+
+  updateLike(cardData) {
+    this._isLiked = cardData.isLiked;
+    this._setLikeState();
   }
 
   _handleImagePreview() {
@@ -26,13 +47,13 @@ export class Card {
   }
 
   _setEventListeners() {
-    this._likeButton.addEventListener("click", () =>
-      this._handleLikeClick()
-    );
+    this._likeButton.addEventListener("click", () => {
+      this._handleLikeClick(this);
+    });
 
-    this._deleteButton.addEventListener("click", () =>
-      this._handleDeleteClick()
-    );
+    this._deleteButton.addEventListener("click", () => {
+      this._handleDeleteClick(this);
+    });
 
     this._image.addEventListener("click", () =>
       this._handleImagePreview()
@@ -50,9 +71,22 @@ export class Card {
     this._title.textContent = this._name;
     this._image.src = this._link;
     this._image.alt = this._name;
+    this._setLikeState();
+
+    if (this._owner !== this._userId) {
+      this._deleteButton.remove();
+    }
 
     this._setEventListeners();
 
     return this._element;
+  }
+
+  getId() {
+    return this._id;
+  }
+
+  isLiked() {
+    return this._isLiked;
   }
 }

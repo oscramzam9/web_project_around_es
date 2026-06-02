@@ -18,7 +18,14 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+          <div class="profile__avatar-container">
+            <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+            <button
+              aria-label="Editar avatar"
+              class="profile__avatar-button"
+              type="button"
+            ></button>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title">Jacques Cousteau</h1>
             <button
@@ -110,6 +117,41 @@
             />
             <span class="popup__error" id="card-url-input-error"></span>
             <button class="button popup__button" type="submit">Crear</button>
+          </form>
+        </div>
+      </div>
+      <div class="popup" id="delete-card-popup">
+        <div class="popup__content popup__content_type_confirmation">
+          <button
+            aria-label="Cerrar ventana emergente"
+            class="popup__close"
+            type="button"
+          ></button>
+          <h3 class="popup__title">¿Estás seguro?</h3>
+          <form class="popup__form popup__form_type_confirmation" novalidate>
+            <button class="button popup__button" type="submit">Sí</button>
+          </form>
+        </div>
+      </div>
+      <div class="popup" id="avatar-popup">
+        <div class="popup__content">
+          <button
+            aria-label="Cerrar ventana emergente"
+            class="popup__close"
+            type="button"
+          ></button>
+          <h3 class="popup__title">Cambiar foto de perfil</h3>
+          <form class="popup__form" id="avatar-form" novalidate>
+            <input
+              class="popup__input popup__input_type_avatar-url"
+              id="avatar-url-input"
+              name="avatar"
+              placeholder="Enlace a la imagen"
+              required
+              type="url"
+            />
+            <span class="popup__error" id="avatar-url-input-error"></span>
+            <button class="button popup__button" type="submit">Guardar</button>
           </form>
         </div>
       </div>
